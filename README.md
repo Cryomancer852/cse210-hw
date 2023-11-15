@@ -1,6 +1,6 @@
 # cse210-ww-student-template
 
-I do in fact know how to push changes to the repo
+I do in fact know how to push changes to the repo. 
 This is the starter code for students in the worldwide content version of CSE 210.
 
 This repository contains the starter code for many different projects. They are arranged as follows:
