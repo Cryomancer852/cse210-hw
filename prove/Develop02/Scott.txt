@@ -1,0 +1,9 @@
+11/24/2023,What was the first thing you did this morning?,asdfgaeewsfva
+11/24/2023,What was the first thing you did this morning?,Again?
+11/24/2023,What was the first thing you did this morning?,Again?
+11/24/2023,What was the first thing you did this morning?,Again?
+11/24/2023,What are you looking forward to today?,Finally getting a different prompt
+11/24/2023,What was the first thing you did this morning?,Not again
+11/24/2023,What good thing happened in the last 10 minutes,Caught a bug
+11/24/2023,What was the first thing you did this morning?,Please stop giving the same prompt
+11/24/2023,What are you looking forward to today?,Food
