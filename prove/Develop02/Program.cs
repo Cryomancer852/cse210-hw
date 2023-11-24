@@ -84,12 +84,14 @@ class Program
             using(StreamWriter newJ = File.CreateText($"{activeJournal.owner}.txt")){}
         }
         activeJournal.readJournal();
+        Console.WriteLine();
 
         bool response = true;
         while(response){
             Console.WriteLine("What would you like to do?\n1. Write\n2. Display\n3. Save\n4. Quit");
 
             if(int.TryParse(Console.ReadLine(),out int input)){ //Valid Input
+                Console.WriteLine();
 
                 if(input == 1){ //Writing
                     DateTime current = DateTime.Now;
