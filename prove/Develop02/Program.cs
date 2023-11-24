@@ -5,13 +5,13 @@ using System.IO;
 
 class Journal
 {
-    public string owner = "";
+    public string _owner = "";
     
     public List<Entry> content = new List<Entry>();
 
     public Journal readJournal(){
         Journal newJournal = new Journal();
-        string[] lines = System.IO.File.ReadAllLines($"{owner}.txt"); //Using the owner's name as the namespace for the file
+        string[] lines = System.IO.File.ReadAllLines($"{_owner}.txt"); //Using the owner's name as the namespace for the file
 
         foreach(string line in lines){
             string[] parts = line.Split(",");
@@ -22,12 +22,12 @@ class Journal
         return newJournal;
     }
 
-    public void writeEntry(string newDate, string newPrompt, string newText){
+    public void writeEntry(string newDate, string newPrompt, string newText){ //Since it adds the entry to the journal it's here instead of in the Entry class
         Entry newEntry = new Entry();
 
-        newEntry.date = newDate;
-        newEntry.text = newText;
-        newEntry.prompt = newPrompt;
+        newEntry._date = newDate;
+        newEntry._text = newText;
+        newEntry._prompt = newPrompt;
 
         content.Add(newEntry);
 
@@ -42,9 +42,9 @@ class Journal
 
 
     public void saveJournal(){
-        using (StreamWriter outputFile = new StreamWriter($"{owner}.txt")){
+        using (StreamWriter outputFile = new StreamWriter($"{_owner}.txt")){
             foreach(Entry log in content){
-                outputFile.WriteLine($"{log.date},{log.prompt},{log.text}");
+                outputFile.WriteLine($"{log._date},{log._prompt},{log._text}");
             }
         }
     }
@@ -52,15 +52,15 @@ class Journal
 
 class Entry
 {
-    public string text = "";
-    public string prompt = "";
-    public string date = "";
+    public string _text = "";
+    public string _prompt = "";
+    public string _date = "";
 
     
 
     public void readEntry(){
-        Console.WriteLine($"Date: {date} - Prompt: {prompt}");
-        Console.WriteLine(text);
+        Console.WriteLine($"Date: {_date} - Prompt: {_prompt}");
+        Console.WriteLine(_text);
     }
 }
 class Program
@@ -68,7 +68,7 @@ class Program
     static void Main(string[] args)
     {
         Random rng = new Random();
-        List<string> prompts = new List<string>(); 
+        List<string> prompts = new List<string>(); //Tried using string[] and defining the items when the array was declared, but I started getting issues with prompts.Count while using that
         prompts.Add("What was the first thing you did this morning?");
         prompts.Add("Who was the first person who did something nice for you today?");
         prompts.Add("What good thing happened in the last 10 minutes");
@@ -79,14 +79,17 @@ class Program
 
         Journal activeJournal = new Journal();
         Console.Write("Please enter your name: ");
-        activeJournal.owner = Console.ReadLine();
-        if(!File.Exists($"{activeJournal.owner}.txt")){
-            using(StreamWriter newJ = File.CreateText($"{activeJournal.owner}.txt")){}
+        activeJournal._owner = Console.ReadLine(); //Using the user's name as the file name, this lets me load the file automatically and removes an input
+
+        if(!File.Exists($"{activeJournal._owner}.txt")){ //Checks if there is a journal to open
+
+            using(StreamWriter newJ = File.CreateText($"{activeJournal._owner}.txt")){} //Creates and closes an empty journal to write to
         }
         activeJournal.readJournal();
+
         Console.WriteLine();
 
-        bool response = true;
+        bool response = true; //Break condition
         while(response){
             Console.WriteLine("What would you like to do?\n1. Write\n2. Display\n3. Save\n4. Quit");
 
@@ -106,7 +109,9 @@ class Program
 
                 }else if(input == 3){ //Saving
                     activeJournal.saveJournal();
+
                 }else{ //Closing
+                    activeJournal.saveJournal(); //Save and close seems like a logical addition, but it may make the option to only save obselete. If the user gets repeat prompts they won't make multiple entries back to back
                     response = false;
                 }
             }else{ //Invalid Input
