@@ -1,48 +1,45 @@
 using System;
+using System.Collections.Generic;
 
 public class Verse{
-    private string _book;
-    private int _chapter;
-    private int[] _verses;
 
+
+    private Reference _heading;
     private string _text;
 
-    private string[] _blanks;
+    private List<Word> _words = new List<Word>();
 
     public Verse(){
-        _book = "John";
-        _chapter = 3;
-        _verses = new int[] {16};
+        _heading = new Reference();
         _text = "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life";
-        _blanks = _text.Split(" ");
-    }
-
-    public string GetHeading(){
-        if (_verses.Length == 1){ // Allows for Verse objects with multiple actual verses 
-            return $"{_book} {_chapter}:{_verses[0]}";
-        }else{
-            return $"{_book} {_chapter}:{_verses[0]}-{_verses[_verses.Length - 1] }";
+        foreach(string word in _text.Split(" ")){
+            Word i = new Word(word);
+            _words.Add(i);
         }
     }
 
+
+    
+    
+
     public void FullDisplay(){
-        Console.WriteLine($"{GetHeading()} {_text}.");
+        Console.WriteLine($"{_heading.GetHeading()} {_text}.");
     }
 
     public void RedactedDisplay(){
         string redacted = "";
-        foreach(string word in _blanks){
-            redacted += $"{word} ";
+        foreach(Word singleWord in _words){
+            redacted += $"{singleWord.GetText()} ";
         }
-        Console.WriteLine($"{GetHeading()} {redacted}.");
+        Console.WriteLine($"{_heading.GetHeading()} {redacted}.");
     }
 
     public void Redact(int rolls){
         Random rng = new Random();
 
         int remainingWords = 0;
-        foreach(string word in _blanks){ // Ensuring that the user doesn't get stuck in an infinite loop due to the i-- line below
-            if(!word.StartsWith("_")){
+        foreach(Word singleWord in _words){ // Ensuring that the user doesn't get stuck in an infinite loop due to the i-- line below
+            if(!singleWord.GetText().StartsWith("_")){
                 remainingWords++;
             }
         }
@@ -53,15 +50,11 @@ public class Verse{
 
 
         for(int i = 0; i < rolls; i++){
-            int hit = rng.Next(0,_blanks.Length);
-            if(_blanks[hit].StartsWith("_")){
+            int hit = rng.Next(0,_words.Count);
+            if(_words[hit].GetText().StartsWith("_")){
                 i--;// Ensures the the user gets a consistent number of words removed Potential problem accounted for above
             }else{
-                string removed = "";
-                foreach(char letter in _blanks[hit]){
-                    removed += "_"; //Used to keep the word length consistent to help with UX
-                }
-                _blanks[hit] = removed;
+                _words[hit].Hide();
             }
 
         }
