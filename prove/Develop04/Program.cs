@@ -13,7 +13,6 @@ class Program
             Console.WriteLine("Select an option:");
             Console.Write("  1. Breathing Activity\n  2. Reflection Activity\n  3. Listing Activity\n  4. Quit\n");
             response = Console.ReadLine();
-            int time = 0;
             if(response == "1"){
                 BreathingActivity act = new BreathingActivity();
                 act.Begin();
